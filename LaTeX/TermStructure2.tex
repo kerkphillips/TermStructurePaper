@@ -1,0 +1,192 @@
+\documentclass[letterpaper,11pt]{article}
+% packages used
+	\usepackage{threeparttable}
+	\usepackage[format=hang,font=normalsize,labelfont=bf]{caption}
+	\usepackage{amsmath}
+	\usepackage{array}
+	\usepackage{delarray}
+	\usepackage{amssymb}
+	\usepackage{amsthm}
+	\usepackage{natbib}
+	\usepackage{caption}
+	\usepackage{subcaption}
+	\usepackage{setspace}
+	\usepackage{float,color}
+	\usepackage[pdftex]{graphicx}
+	\usepackage{hyperref}
+	\usepackage{multirow}
+	\usepackage{tabularx}
+	\usepackage{colortbl}
+	\usepackage{float,graphicx,color}
+	\usepackage{graphics}
+	\usepackage{xcolor,colortbl}
+	\usepackage{booktabs}
+	\usepackage{tablefootnote}
+	\usepackage{graphicx}
+    \usepackage{placeins}
+    \usepackage{authblk}
+    \usepackage{caption}
+% theorem settings
+	\theoremstyle{definition}
+	\newtheorem{theorem}{Theorem}
+	\newtheorem{acknowledgment}[theorem]{Acknowledgment}
+	\newtheorem{algorithm}[theorem]{Algorithm}
+	\newtheorem{axiom}[theorem]{Axiom}
+	\newtheorem{case}[theorem]{Case}
+	\newtheorem{claim}[theorem]{Claim}
+	\newtheorem{conclusion}[theorem]{Conclusion}
+	\newtheorem{condition}[theorem]{Condition}
+	\newtheorem{conjecture}[theorem]{Conjecture}
+	\newtheorem{corollary}[theorem]{Corollary}
+	\newtheorem{criterion}[theorem]{Criterion}
+	\newtheorem{definition}{Definition} % Number definitions on their own
+	\newtheorem{derivation}{Derivation} % Number derivations on their own
+	\newtheorem{example}[theorem]{Example}
+	\newtheorem{exercise}[theorem]{Exercise}
+	\newtheorem{lemma}[theorem]{Lemma}
+	\newtheorem{notation}[theorem]{Notation}
+	\newtheorem{problem}[theorem]{Problem}
+	\newtheorem{proposition}{Proposition} % Number propositions on their own
+	\newtheorem{remark}[theorem]{Remark}
+	\newtheorem{solution}[theorem]{Solution}
+	\newtheorem{summary}[theorem]{Summary}
+% other setup
+	\hypersetup{colorlinks,linkcolor=red,urlcolor=blue,citecolor=red,hypertexnames=false}
+	\graphicspath{{./figures/}}
+	\DeclareMathOperator*{\Max}{Max}
+	\bibliographystyle{aer}
+	\numberwithin{equation}{section}
+	\renewcommand\theenumi{\roman{enumi}}
+	\newcommand\ve{\varepsilon}
+	\newcommand{\superscript}[1]{\ensuremath{^{\textrm{#1}}}}
+	\newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
+	\newcommand{\TODO}[1]{ {\color{magenta} TODO: [#1]} }
+	\newcommand\fnote[1]{\captionsetup{font=small}\caption*{#1}}
+	\newcommand{\bftab}{\fontseries{b}\selectfont}
+
+
+\begin{document}
+
+\begin{spacing}{1.5}
+
+\section{Simple Model with Term Structure} \label{sec_Model1}
+
+	\subsection{Households}
+
+		Bonds exist with maturities from 1 to $I$ periods into the future.  The price in period $t$ of a bond delivering 1 unit of real consumption in period $t+i$ is denoted $q_{it}$.  The quantity of bonds held in period $t$, coming due in period $t+i$ is denoted $b_{it}$.  Bonds are contracts structured so that the bond pays one unit of the final output good when the maturity goes to zero, i.e. $q_{it} = 1$.
+
+		Households solve the following dynamic program:
+		\begin{align}
+			V(k_{t-1}, \{b_{i-1,t-1}\}_{i=1}^I; \Theta_t) & = \max_{x_t, \{b^{i,t+1}\}_{i=1}^I, l_t} [c_t^\gamma + \psi(1-l_t)^\gamma]^{\frac{\phi}{\gamma}} \nonumber \\
+			& + \beta E \left\{ V(k_t, \{b_{it}\}_{i=1}^I; \Theta_{t+1}) \right\} \nonumber
+		\end{align}
+		\begin{align}
+			c_t & = w_t l_t + (1 + r_t - \delta) k_{t-1} + \sum_{i=1}^I q_{it} b_{i-1,t-1} - k_t - \sum_{i=1}^I  q_{it} b_{it} \label{eq_cdef}
+		\end{align}
+		
+		where $\Theta_t$ is a set of variables known to the household.
+
+		There is one Euler equation which implicitly defines $k_t$, another Euler equation which implicitly defines $l_t$, and there are $I$ Euler equations which implicitly define the $\{b_{it}\}_{i=1}^I$.
+		\begin{align}
+			u_{ct} & = \beta E\left\{ u_{c,t+1} (1+r_{t+1} - \delta) \right\} \label{eq_kEuler} \\
+			u_{ct} w_t & = u_{lt} \label{eq_lEuler} \\
+			u_{ct} q_{it} & = \beta E\left\{ u_{c,t+1} q_{i-1,b+1} \right\} \label{eq_bEuler} ; \; \forall i \\
+			u_{ct} & \equiv \phi [ c_t^\gamma + \psi(1-l_t)^\gamma]^{\frac{\phi-\gamma}{\gamma}} c_t^{\gamma-1} \nonumber \\
+			u_{lt} & \equiv \phi [ c_t^\gamma + \psi(1-l_t)^\gamma]^{\frac{\phi-\gamma}{\gamma}} \psi (1-l_t)^{\gamma - 1} \nonumber
+		\end{align}
+
+	\subsection{Firms}
+
+		\begin{align}
+			Y_t & = K_{t-1}^\alpha (e^{z_t} L_t)^{1-\alpha} \label{eq_Ydef} \\
+			w_t & = (1-\alpha) \frac{Y_t}{L_t} \label{eq_wdef} \\
+			r_t & = \alpha \frac{Y_t}{K_{t-1}} \label{eq_rdef}
+		\end{align}
+
+
+	\subsection{Market Clearing}
+
+		\begin{align}
+			K_{t-1} & = k_{t-1} \label{eq_Kmkt} \\
+			L_t & = l_t \label{eq_Lmkt}
+		\end{align}
+
+		Markets for bonds of all maturities must clear each period.  Demand for bonds of maturity $i$ are denoted $b_{it}$ above.  Supply of bonds by the government will be denoted $B_{it}$.  Narket clearing gives:
+
+		\begin{equation}
+			b_{it} = B_{it}; \; \forall i \label{eq_bmkt}
+		\end{equation}
+
+	\subsection{Exogenous Laws of Motion}
+
+		\begin{equation}
+			z_{t+1} = \rho z_t + \ve_t; \; \ve_t \sim iid(0, \sigma^2) \label{eq_zlom}
+		\end{equation}
+		
+		The laws of motion for the supplies of bonds are as follows.  Each period the government issues a new set of assets of maturities 1 through $I$, we denote these as $B^N_{it}$  Assets of maturity 0 are retired.  This gives:
+		\begin{align}
+			B_{It} & = B^N_{It} \label{eq_B1lom} \\
+			B_{it} & = B_{i+1,t-1} + B^N_{it}; \text{ for } 1 \le i \le I-1 \label{eq_Blom}
+		\end{align}
+
+		If the longest maturity is 6 periods and if the government only ever issues bonds of maturites 1 and 6, then we have $I=6$ and $B^N_{it} = 0$ if $1 < i < 6$.  The remaining $B^N_{1t}$ and $B^N_{6t}$ will follow some exogenous law of motion that refelcts government policy.
+
+	\subsection{Additional Definitions}
+
+		Once we know the exogenous behavior of the supplies from above, the $I$ Euler equations from equation \eqref{eq_bEuler} now impliicty define the market clearing prices, $\{ q_{it} \}_{i=1}^I$, as functions of the state variables.  Hence, like $l_t$, bond prices are ``jump'' variables.
+
+		The yield curve can be derived from the bond prices by calculating yield-to-maturity for simple bonds.
+		\begin{align}
+			q_{it} & = \left( \frac{1}{1+r_{it}} \right)^i \nonumber \\
+			r_{it} & = q_{it}^{-\frac{1}{i}} - 1 \label{eq_ridef}
+		\end{align}
+
+		Investment is given by:
+		\begin{equation}
+			I_t = K_t - (1-\delta)K_{t-1}
+		\end{equation}
+
+	\subsection{Summary}
+		The set of endogenous state variables is $\mathbf{X}_t = (K_t, z_t, \{B_{it}\}_{i=1}^I)$.
+
+		The set of implicitly defined ``jump'' variables is $\mathbf{Y}_t = (L_t, \{q_{it}\}_{i=1}^I)$.
+
+		The set of exogenous state variables is $\mathbf{Z}_t = (\ve_t, \{B^N_{it}\}_{i=1}^I)$.
+
+		The set of explicitly defined endogenous variables is $\mathbf{D}_t = (Y_t, I_t, w_t, r_t, c_t, \{r_{it}\}_{i=1}^I).$
+
+		Parameters are $(\gamma, \phi, \psi, \beta, \delta, \alpha, \rho, \sigma)$.
+
+		The characterizing equations are:
+		\begin{align}
+			z_{t+1} & = \rho z_t + \ve_t; \; \ve_t \sim iid(0, \sigma^2) \\
+			B_{It} & = B^N_{It} \\
+			B_{it} & = B_{i+1,t-1} + B^N_{it}; \text{ for } 1 \le i \le I-1 \\
+			I_t & = K_t - (1-\delta)K_{t-1} \\
+			r_{it} & = q_{it}^{-\frac{1}{i}} - 1 \\
+			Y_t & = K_{t-1}^\alpha (e^{z_t} L_t)^{1-\alpha} \\
+			w_t & = (1-\alpha) \frac{Y_t}{L_t} \\
+			r_t & = \alpha \frac{Y_t}{K_{t-1}} \\
+			c_t & = w_t l_t + (1 + r_t - \delta) k_{t-1} + \sum_{i=1}^I q_{it} b_{i-1,t-1} - k_t - \sum_{i=1}^I  q_{it} b_{it} \\
+			u_{ct} & \equiv \phi [ c_t^\gamma + \psi(1-l_t)^\gamma]^{\frac{\phi-\gamma}{\gamma}} c_t^{\gamma-1} \\
+			c_t^{\gamma-1} w_t & = \psi (1-l_t)^{\gamma-1} \\
+			u_{ct} q_{it} & = \beta E\left\{ u_{c,t+1} q_{i-1,b+1} \right\} ; \; \forall i \\
+			u_{ct} & = \beta E\left\{ u_{c,t+1} (1+r_{t+1} - \delta) \right\}
+		\end{align}
+
+\clearpage
+\section{Further Enhancements to the Model} \label{sec_Model2}
+	
+	Add taxes and transfers
+
+	Add money
+
+	Add intermediate goods with monopolistic competition
+
+	Add sticky nominal prices for intermediate goods
+
+	Add capital adjustment costs
+
+\end{spacing}
+
+\end{document}
